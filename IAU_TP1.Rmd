@@ -1,0 +1,66 @@
+---
+title: "IAU TP 01"
+author: "Maria Jimena Ramirez Dimitrijewits"
+date: "UTDT 2023"
+output: html_document
+---
+
+
+### Defunciones por incidentes viales en la provincia de Buenos Aires en 2017
+
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+def_PBA <- read_csv("defunciones-incidentes-viales-2017.csv")
+```
+
+
+```{r}
+spec(def_PBA)
+```
+
+
+```{r}
+skimr::skim(def_PBA)
+```
+
+
+```{r}
+def_PBA$municipio_nombre
+```
+
+
+### ¿Cuál es el municipio de la PBA en el cual se registro mayor cantidad de incidentes durante el 2017?
+
+
+```{r}
+def_Municipios_PBA <- def_PBA %>% 
+  group_by(municipio_nombre) %>% 
+  summarise(cant_incidentes = n()) %>% 
+  arrange(-(cant_incidentes)) %>% 
+  print()
+```
+
+
+```{r}
+def_Municipios_PBA <- def_Municipios_PBA %>% 
+  mutate(TOTAL = sum(cant_incidentes)) %>% 
+  mutate(ptje = round(cant_incidentes/TOTAL*100, digits = 0))
+```
+
+```{r}
+print(def_Municipios_PBA)
+```
+
+
+#### Existe gran cantidad de incidentes (48%) cuyo municipio no fue identificado. Sin embargo, si hacemos foco en los incidentes con registro completo podemos observar mayor cantidad en Florencio Varela con un total de 98 incidentes registrados.
+
+
+
+
+
+
